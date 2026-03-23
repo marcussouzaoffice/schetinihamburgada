@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="overlay">
+
+<header>
+  <div class="logo" onclick="window.location.href='index.html'">
+    <img src="logo-schetini - cópia.jpeg">
+  </div>
+
+  <nav>
+    <span onclick="window.location.href='index.html'">Home</span>
+    <span onclick="window.location.href='pedidos.html'">Pedidos</span>
+    <span onclick="window.location.href='suporte.html'">Suporte</span>
+    <span onclick="window.location.href='admin.html'">Administrativo</span>
+    <span onclick="window.location.href='historico.html'">Histórico</span>
+
+  </nav>
+</header>
+
+<main class="container">
+
+  <!-- LOGIN -->
+  <div id="login">
+    <h2>Login Admin</h2>
+    <input id="user" placeholder="Usuário">
+    <input id="pass" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painel" class="hidden">
+    <h2>Editar Cardápio</h2>
+
+    <div id="cardapioAdmin"></div>
+
+    <button onclick="salvarCardapio()">💾 Salvar</button>
+  </div>
+
+</main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

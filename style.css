@@ -1,0 +1,218 @@
+/* RESET */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: url('https://images.unsplash.com/photo-1550547660-d9450f859349') no-repeat center center/cover;
+  color: #fff;
+}
+
+/* OVERLAY */
+.overlay {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.80);
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000;
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* LOGO */
+.logo img {
+  height: 60px;
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));
+}
+
+/* MENU */
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav span {
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+nav span:hover {
+  color: red;
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  width: 100%;
+}
+
+/* INPUTS */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+/* BOTÕES */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: red;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #cc0000;
+}
+
+.print {
+  background: green;
+}
+
+/* LISTA */
+#lista {
+  margin-top: 10px;
+}
+
+.item {
+  background: #1a1a1a;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+/* TOTAL */
+.total {
+  font-size: 20px;
+  color: #00ff88;
+  margin-top: 10px;
+}
+
+/* FOOTER */
+footer {
+  background: #000;
+  text-align: center;
+  padding: 8px;
+  font-size: 12px;
+}
+
+/* HOME */
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  text-align: center;
+}
+
+.home h1 {
+  font-size: 50px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff0000, #ff8800);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home p {
+  font-size: 20px;
+  color: #ccc;
+}
+
+/* SUPORTE */
+.suporte {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  text-align: center;
+}
+
+.suporte h1 {
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+/* BOTÃO WHATSAPP */
+.whatsapp-btn {
+  background: #1f1f1f;
+  border-radius: 20px;
+  padding: 25px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  transition: 0.3s;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.05);
+}
+
+.whatsapp-btn img {
+  width: 70px;
+  margin-bottom: 15px;
+}
+
+.whatsapp-btn span {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  nav {
+    gap: 10px;
+  }
+
+  .home h1 {
+    font-size: 36px;
+  }
+
+  .home p {
+    font-size: 16px;
+  }
+}
+
+html, body {
+  height: 100%;
+}
