@@ -1,4 +1,7 @@
-let cardapio = [
+// =========================
+// 📋 CARDÁPIO
+// =========================
+let cardapio = JSON.parse(localStorage.getItem("cardapio")) || [
   { nome: "Cheese Burger", preco: 25 },
   { nome: "Cheese Bacon", preco: 30 },
   { nome: "Pulled Pork", preco: 30 },
@@ -11,9 +14,13 @@ let cardapio = [
 
 let pedido = [];
 
-/* carregar cardápio */
+// =========================
+// 🧾 CARREGAR CARDÁPIO
+// =========================
 function carregar() {
   let select = document.getElementById("produto");
+  if (!select) return;
+
   select.innerHTML = "";
 
   cardapio.forEach((p, i) => {
@@ -21,10 +28,12 @@ function carregar() {
   });
 }
 
-/* adicionar item */
+// =========================
+// ➕ ADICIONAR ITEM
+// =========================
 function addItem() {
   let i = document.getElementById("produto").value;
-  let qtd = document.getElementById("qtd").value;
+  let qtd = parseInt(document.getElementById("qtd").value);
   let opcao = document.getElementById("opcao").value;
 
   let produto = cardapio[i];
@@ -38,9 +47,26 @@ function addItem() {
   render();
 }
 
-/* renderizar lista */
+// =========================
+// 💰 CALCULAR TOTAL
+// =========================
+function calcularTotal() {
+  let total = 0;
+
+  pedido.forEach(p => {
+    total += p.preco * p.qtd;
+  });
+
+  return total;
+}
+
+// =========================
+// 🖥️ RENDERIZAR LISTA
+// =========================
 function render() {
   let lista = document.getElementById("lista");
+  if (!lista) return;
+
   lista.innerHTML = "";
 
   let total = 0;
@@ -53,18 +79,25 @@ function render() {
       <div class="item">
         ${p.qtd}x ${p.nome}<br>
         <small>${p.opcao || ""}</small><br>
-        R$${subtotal}
+        R$${subtotal.toFixed(2)}
       </div>
     `;
   });
 
-  document.getElementById("total").innerText = "Total: R$" + total.toFixed(2);
+  let totalDiv = document.getElementById("total");
+  if (totalDiv) {
+    totalDiv.innerText = "Total: R$ " + total.toFixed(2);
+  }
 }
 
-/* impressão */
+// =========================
+// 🖨️ IMPRESSÃO
+// =========================
 function imprimir() {
-  const cliente = document.getElementById("cliente").value;
+  const cliente = document.getElementById("cliente").value || "Não informado";
   const agora = new Date().toLocaleString();
+  const total = calcularTotal();
+  const numeroPedido = Math.floor(Math.random() * 10000);
 
   let itensHTML = "";
   pedido.forEach(i => {
@@ -74,22 +107,25 @@ function imprimir() {
     `;
   });
 
-  // =========================
-  // 🧾 VIA CLIENTE
-  // =========================
+  // 🧾 CLIENTE
   const clientePrint = `
-    <div style="font-family: monospace; width: 58mm;">
-      <div style="text-align:center;">
-        <img src="logo.png" style="width:80px"><br>
-        <strong>SCHEETINI CHARCUTARIA</strong><br>
-        -------------------------
+    <div style="font-family: monospace; width: 58mm; text-align:center;">
+      
+      <img src="logo.png" style="width:70px;"><br>
+      <strong>SCHEETINI CHARCUTARIA</strong><br>
+      Pedido Nº: ${numeroPedido}
+      <br>-------------------------
+
+      <div style="text-align:left;">
+        Cliente: ${cliente}<br>
+        ${agora}
       </div>
 
-      Cliente: ${cliente}<br>
-      ${agora}
-      <br><br>
+      <br>
 
-      ${itensHTML}
+      <div style="text-align:left;">
+        ${itensHTML}
+      </div>
 
       <br>
       -------------------------
@@ -97,23 +133,29 @@ function imprimir() {
 
       <br><br>
       Obrigado pela preferência!
+      <br><br><br>
     </div>
   `;
 
-  // =========================
-  // 🍔 VIA COZINHA
-  // =========================
+  // 🍔 COZINHA
   const cozinhaPrint = `
     <div style="font-family: monospace; width: 58mm;">
+      
       <div style="text-align:center;">
         <strong>*** COZINHA ***</strong><br>
-        -------------------------
+        Pedido Nº: ${numeroPedido}
+        <br>-------------------------
       </div>
 
-      Cliente: ${cliente}<br><br>
+      <div>
+        Cliente: ${cliente}<br>
+        ${agora}
+      </div>
+
+      <br>
 
       ${pedido.map(i => `
-        <div style="margin-bottom:8px">
+        <div style="margin-bottom:10px">
           <strong>${i.qtd}x ${i.nome}</strong><br>
           ${i.opcao ? `<span>Obs: ${i.opcao}</span>` : ""}
         </div>
@@ -121,18 +163,25 @@ function imprimir() {
 
       <br>
       -------------------------
+      <br><br><br>
     </div>
   `;
 
-  // imprime cliente
   abrirImpressao(clientePrint);
 
-  // imprime cozinha (delay pequeno)
   setTimeout(() => {
     abrirImpressao(cozinhaPrint);
-  }, 1000);
+  }, 800);
+
+  salvarPedido(pedido);
+
+  pedido = [];
+  render();
 }
 
+// =========================
+// 🧾 ABRIR IMPRESSÃO
+// =========================
 function abrirImpressao(conteudo) {
   const win = window.open('', '', 'width=300,height=600');
 
@@ -155,23 +204,9 @@ function abrirImpressao(conteudo) {
   win.document.close();
 }
 
-/* navegação */
-function mostrar(tela) {
-  document.querySelectorAll("main section").forEach(sec => {
-    sec.classList.add("hidden");
-  });
-
-  document.getElementById(tela).classList.remove("hidden");
-}
-
-function irHome() {
-  mostrar("home");
-}
-
-/* iniciar */
-carregar();
-
-// LOGIN SIMPLES
+// =========================
+// 🔐 LOGIN ADMIN
+// =========================
 function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
@@ -185,8 +220,13 @@ function login() {
   }
 }
 
+// =========================
+// ⚙️ ADMIN
+// =========================
 function carregarAdmin() {
   const div = document.getElementById("cardapioAdmin");
+  if (!div) return;
+
   div.innerHTML = "";
 
   cardapio.forEach((item, i) => {
@@ -210,12 +250,15 @@ function salvarCardapio() {
   alert("Cardápio salvo!");
 }
 
-function salvarPedido(pedido) {
+// =========================
+// 📊 HISTÓRICO
+// =========================
+function salvarPedido(pedidoAtual) {
   let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
   historico.push({
     data: new Date().toLocaleString(),
-    itens: pedido,
+    itens: pedidoAtual,
     total: calcularTotal()
   });
 
@@ -234,11 +277,15 @@ function carregarHistorico() {
     div.innerHTML += `
       <div class="item">
         <strong>${p.data}</strong><br>
-        Total: R$ ${p.total}<br>
+        Total: R$ ${p.total.toFixed(2)}<br>
         ${p.itens.map(i => i.nome).join(", ")}
       </div>
     `;
   });
 }
 
+// =========================
+// 🚀 INICIAR
+// =========================
+carregar();
 carregarHistorico();
