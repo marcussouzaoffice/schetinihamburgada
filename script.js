@@ -63,30 +63,96 @@ function render() {
 
 /* impressão */
 function imprimir() {
-  let cliente = document.getElementById("cliente").value;
+  const cliente = document.getElementById("cliente").value;
+  const agora = new Date().toLocaleString();
 
-  let total = 0;
-  let texto = "";
-
-  pedido.forEach(p => {
-    let subtotal = p.preco * p.qtd;
-    total += subtotal;
-
-    texto += `${p.qtd}x ${p.nome}\n${p.opcao || ""}\n${subtotal}\n----------------\n`;
+  let itensHTML = "";
+  pedido.forEach(i => {
+    itensHTML += `
+      <div>${i.qtd}x ${i.nome}</div>
+      ${i.opcao ? `<div style="font-size:10px">Obs: ${i.opcao}</div>` : ""}
+    `;
   });
 
-  let conteudo = `
-******** SCHETINI ********
-Cliente: ${cliente}
--------------------------
-${texto}
-TOTAL: R$${total.toFixed(2)}
-*************************
-`;
+  // =========================
+  // 🧾 VIA CLIENTE
+  // =========================
+  const clientePrint = `
+    <div style="font-family: monospace; width: 58mm;">
+      <div style="text-align:center;">
+        <img src="logo.png" style="width:80px"><br>
+        <strong>SCHEETINI CHARCUTARIA</strong><br>
+        -------------------------
+      </div>
 
-  let win = window.open("", "", "width=300,height=600");
-  win.document.write(`<pre>${conteudo}\n\n--- COZINHA ---\n${conteudo}</pre>`);
-  win.print();
+      Cliente: ${cliente}<br>
+      ${agora}
+      <br><br>
+
+      ${itensHTML}
+
+      <br>
+      -------------------------
+      <strong>Total: R$ ${total.toFixed(2)}</strong>
+
+      <br><br>
+      Obrigado pela preferência!
+    </div>
+  `;
+
+  // =========================
+  // 🍔 VIA COZINHA
+  // =========================
+  const cozinhaPrint = `
+    <div style="font-family: monospace; width: 58mm;">
+      <div style="text-align:center;">
+        <strong>*** COZINHA ***</strong><br>
+        -------------------------
+      </div>
+
+      Cliente: ${cliente}<br><br>
+
+      ${pedido.map(i => `
+        <div style="margin-bottom:8px">
+          <strong>${i.qtd}x ${i.nome}</strong><br>
+          ${i.opcao ? `<span>Obs: ${i.opcao}</span>` : ""}
+        </div>
+      `).join("")}
+
+      <br>
+      -------------------------
+    </div>
+  `;
+
+  // imprime cliente
+  abrirImpressao(clientePrint);
+
+  // imprime cozinha (delay pequeno)
+  setTimeout(() => {
+    abrirImpressao(cozinhaPrint);
+  }, 1000);
+}
+
+function abrirImpressao(conteudo) {
+  const win = window.open('', '', 'width=300,height=600');
+
+  win.document.write(`
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: monospace;
+          font-size: 12px;
+        }
+      </style>
+    </head>
+    <body onload="window.print(); window.close();">
+      ${conteudo}
+    </body>
+    </html>
+  `);
+
+  win.document.close();
 }
 
 /* navegação */
