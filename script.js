@@ -260,9 +260,15 @@ function login() {
   const pass = document.getElementById("pass").value;
 
   if (user === "Hamburgada" && pass === "Schetini1245") {
+
+    // 🔐 salva login ativo
+    localStorage.setItem("adminLogado", "true");
+
     document.getElementById("login").classList.add("hidden");
     document.getElementById("painel").classList.remove("hidden");
+
     carregarAdmin();
+
   } else {
     alert("Login inválido");
   }
@@ -354,4 +360,49 @@ function gerarNumeroPedido() {
   localStorage.setItem("numeroPedido", numero);
 
   return numero;
+}
+
+function zerarHistorico() {
+
+  // 🔒 verifica se está logado
+  const logado = localStorage.getItem("adminLogado");
+
+  if (logado !== "true") {
+    alert("Acesso negado! Faça login como administrador.");
+    return;
+  }
+
+  const confirmar = confirm("Tem certeza que deseja apagar todo o histórico de pedidos?");
+
+  if (confirmar) {
+    localStorage.removeItem("historico");
+    localStorage.removeItem("numeroPedido");
+
+    alert("Histórico apagado e numeração reiniciada!");
+  }
+}
+
+function verificarLogin() {
+  const logado = localStorage.getItem("adminLogado");
+
+  const loginDiv = document.getElementById("login");
+  const painelDiv = document.getElementById("painel");
+
+  if (!loginDiv || !painelDiv) return;
+
+  if (logado === "true") {
+    loginDiv.classList.add("hidden");
+    painelDiv.classList.remove("hidden");
+    carregarAdmin();
+  } else {
+    loginDiv.classList.remove("hidden");
+    painelDiv.classList.add("hidden");
+  }
+}
+
+verificarLogin();
+
+function logout() {
+  localStorage.removeItem("adminLogado");
+  location.reload();
 }

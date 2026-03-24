@@ -216,3 +216,11 @@ footer {
 html, body {
   height: 100%;
 }
+
+.btn-danger {
+  background: #8b0000;
+}
+
+.btn-danger:hover {
+  background: #b00000;
+}
