@@ -112,7 +112,7 @@ function imprimir() {
       <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
       <br>-------------------------
 
-      Pedido Nº: ${numeroPedido}
+        Pedido Nº: ${numeroPedido}
       <br>-------------------------
 
       <div style="text-align:left;">
