@@ -102,7 +102,7 @@ function imprimir() {
   pedido.forEach(i => {
     itensHTML += `
       <div>${i.qtd}x ${i.nome}</div>
-      ${i.opcao ? `<div style="font-size:10px">Obs: ${i.opcao}</div>` : ""}
+      ${i.opcao ? `<div style="font-size:22px">Obs: ${i.opcao}</div>` : ""}
     `;
   });
 
@@ -110,13 +110,13 @@ const clientePrint = `
   <div style="font-family: monospace; width: 58mm; text-align:center;">
 
     <!-- LOGO -->
-    <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
+    <img src="${window.location.origin}/logoschetini.jpeg" style="width:90px;">
     
     <br>
     -------------------------
 
     <!-- NÚMERO DO PEDIDO -->
-    <div style="font-size:16px; font-weight:bold;">
+    <div style="font-size:20px; font-weight:bold;">
       Pedido Nº ${numeroPedido}
     </div>
 
@@ -131,12 +131,30 @@ const clientePrint = `
     <br>
 
     <!-- ITENS -->
-    <div>
-      ${pedido.map(i => `
-        ${i.qtd}x ${i.nome}<br>
-        ${i.opcao ? `<span style="font-size:10px">Obs: ${i.opcao}</span><br>` : ""}
-      `).join("")}
+<div style="text-align:left; font-size:12px;">
+
+  ${pedido.map(i => `
+    
+    <div style="margin-bottom:8px;">
+
+      <!-- LINHA PRINCIPAL -->
+      <div style="display:flex; justify-content:space-between;">
+        <span>${i.qtd}x ${i.nome}</span>
+        <span>R$ ${(i.qtd * i.preco).toFixed(2)}</span>
+      </div>
+
+      <!-- OBSERVAÇÃO -->
+      ${i.opcao ? `
+        <div style="font-size:10px;">
+          ↳ ${i.opcao}
+        </div>
+      ` : ""}
+
     </div>
+
+  `).join("")}
+
+</div>
 
     <br>
     -------------------------
@@ -149,7 +167,7 @@ const clientePrint = `
     <br>
 
     <!-- FRASE -->
-    <div style="font-size:11px;">
+    <div style="font-size:12px;">
       "Tudo posso naquele que me fortalece."<br>
       - Filipenses 4:13
     </div>
