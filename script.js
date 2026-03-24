@@ -110,6 +110,9 @@ function imprimir() {
   const clientePrint = `
       <div style="font-family: monospace; width: 58mm; text-align:center;">
       <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
+      -------------------------
+
+      <br><br>
       Pedido Nº: ${numeroPedido}
       <br>-------------------------
 
