@@ -106,41 +106,66 @@ function imprimir() {
     `;
   });
 
-  // 🧾 CLIENTE
-  const clientePrint = `
-      <div style="font-family: monospace; width: 58mm; text-align:center;">
-      <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
+const clientePrint = `
+  <div style="font-family: monospace; width: 58mm; text-align:center;">
 
-      ---------------
+    <!-- LOGO -->
+    <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
+    
+    <br>
+    -------------------------
 
-      <br><br>
-      Pedido Nº: ${numeroPedido}
-      <br>---------------
-
-      <div style="text-align:left;">
-        Cliente: ${cliente}<br>
-        ${agora}
-      </div>
-
-      <br>
-
-      <div style="text-align:left;">
-        ${itensHTML}
-      </div>
-
-      <br>
-      ---------------
-      <strong>Total: R$ ${total.toFixed(2)}</strong>
-
-      <br><br>
-      "Tudo posso naquele que me fortalece".
-      - Filipenses 4:13
-      <br>---------------
-
-      Obrigado pela preferência!
-      <br><br><br>
+    <!-- NÚMERO DO PEDIDO -->
+    <div style="font-size:16px; font-weight:bold;">
+      Pedido Nº ${numeroPedido}
     </div>
-  `;
+
+    -------------------------
+
+    <!-- CLIENTE + DATA -->
+    <div>
+      Cliente: ${cliente}<br>
+      ${agora}
+    </div>
+
+    <br>
+
+    <!-- ITENS -->
+    <div>
+      ${pedido.map(i => `
+        ${i.qtd}x ${i.nome}<br>
+        ${i.opcao ? `<span style="font-size:10px">Obs: ${i.opcao}</span><br>` : ""}
+      `).join("")}
+    </div>
+
+    <br>
+    -------------------------
+
+    <!-- TOTAL -->
+    <div style="font-size:14px; font-weight:bold;">
+      Total: R$ ${total.toFixed(2)}
+    </div>
+
+    <br>
+
+    <!-- FRASE -->
+    <div style="font-size:11px;">
+      "Tudo posso naquele que me fortalece."<br>
+      - Filipenses 4:13
+    </div>
+
+    <br>
+    -------------------------
+
+    <!-- AGRADECIMENTO -->
+    <div>
+      Obrigado pela preferência!
+    </div>
+
+    <br><br><br>
+
+  </div>
+`;
 
   // 🍔 COZINHA
   const cozinhaPrint = `
