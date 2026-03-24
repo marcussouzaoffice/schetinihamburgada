@@ -97,8 +97,7 @@ function imprimir() {
   const cliente = document.getElementById("cliente").value || "Não informado";
   const agora = new Date().toLocaleString();
   const total = calcularTotal();
-  const numeroPedido = Math.floor(Math.random() * 10000);
-
+  const numeroPedido = gerarNumeroPedido();
   let itensHTML = "";
   pedido.forEach(i => {
     itensHTML += `
@@ -109,10 +108,10 @@ function imprimir() {
 
   // 🧾 CLIENTE
   const clientePrint = `
-    <div style="font-family: monospace; width: 58mm; text-align:center;">
-      
-      <img src="logo.png" style="width:70px;"><br>
-      <strong>SCHEETINI CHARCUTARIA</strong><br>
+      <div style="font-family: monospace; width: 58mm; text-align:center;">
+      <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
+      <br>-------------------------
+
       Pedido Nº: ${numeroPedido}
       <br>-------------------------
 
@@ -132,6 +131,10 @@ function imprimir() {
       <strong>Total: R$ ${total.toFixed(2)}</strong>
 
       <br><br>
+      "Tudo posso naquele que me fortalece".
+      - Filipenses 4:13
+      <br>-------------------------
+
       Obrigado pela preferência!
       <br><br><br>
     </div>
@@ -289,3 +292,21 @@ function carregarHistorico() {
 // =========================
 carregar();
 carregarHistorico();
+
+function gerarNumeroPedido() {
+  let hoje = new Date().toLocaleDateString();
+  let dataSalva = localStorage.getItem("dataPedido");
+
+  let numero = localStorage.getItem("numeroPedido");
+
+  if (dataSalva !== hoje) {
+    numero = 1;
+    localStorage.setItem("dataPedido", hoje);
+  } else {
+    numero = numero ? parseInt(numero) + 1 : 1;
+  }
+
+  localStorage.setItem("numeroPedido", numero);
+
+  return numero;
+}
