@@ -110,11 +110,12 @@ function imprimir() {
   const clientePrint = `
       <div style="font-family: monospace; width: 58mm; text-align:center;">
       <img src="${window.location.origin}/logoschetini.jpeg" style="width:70px;">
-      -------------------------
+
+      ---------------
 
       <br><br>
       Pedido Nº: ${numeroPedido}
-      <br>-------------------------
+      <br>---------------
 
       <div style="text-align:left;">
         Cliente: ${cliente}<br>
@@ -128,13 +129,13 @@ function imprimir() {
       </div>
 
       <br>
-      -------------------------
+      ---------------
       <strong>Total: R$ ${total.toFixed(2)}</strong>
 
       <br><br>
       "Tudo posso naquele que me fortalece".
       - Filipenses 4:13
-      <br>-------------------------
+      <br>---------------
 
       Obrigado pela preferência!
       <br><br><br>
