@@ -24,28 +24,29 @@
   </nav>
 </header>
 
-<main class="container">
+<main class="container container-admin">
 
-  <!-- LOGIN -->
-  <div id="login">
+  <div id="login" class="panel">
     <h2>Login Admin</h2>
     <input id="user" placeholder="Usuário">
     <input id="pass" type="password" placeholder="Senha">
     <button onclick="login()">Entrar</button>
   </div>
 
-  <!-- PAINEL -->
-  <div id="painel" class="hidden">
+  <div id="painel" class="hidden panel">
 
     <div class="admin-header">
-      <img src="logofes.png">
+      <img src="LOGOFES.png" alt="Logo FES">
       <h2>Painel Administrativo</h2>
       <p class="admin-system">Food Express System</p>
     </div>
 
-    <h3>Gerenciar Cardápio</h3>
+    <div id="dashboardAdmin" class="hidden"></div>
 
-    <div id="cardapioAdmin"></div>
+    <h3>Gerenciar Cardápio</h3>
+    <p class="admin-info">Use as setas para reorganizar os produtos na ordem que você quiser.</p>
+
+    <div id="cardapioAdmin" class="admin-grid"></div>
 
     <div class="admin-add">
       <input id="novoProdutoNome" placeholder="Nome do produto">
@@ -53,17 +54,20 @@
       <button onclick="adicionarProduto()">➕ Adicionar Produto</button>
     </div>
 
-    <button onclick="salvarCardapio()">💾 Salvar Alterações</button>
-    <button onclick="zerarHistorico()" class="btn-danger">🗑️ Zerar Histórico</button>
-    <button onclick="logout()">🚪 Sair</button>
+    <div class="admin-actions-grid">
+      <button onclick="salvarCardapio()">💾 Salvar Alterações</button>
+      <button onclick="zerarHistorico()" class="btn-danger">🗑️ Zerar Histórico</button>
+      <button onclick="zerarNumeracaoPedido()" class="btn-warning">#️⃣ Zerar Numeração</button>
+      <button onclick="logout()">🚪 Sair</button>
+    </div>
 
   </div>
 
 </main>
 
-    <footer>
-      MS TECHNOLOGY © 2026
-    </footer>
+<footer>
+  MS TECHNOLOGY © 2026
+</footer>
 
 </div>
 

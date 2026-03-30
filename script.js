@@ -11,6 +11,10 @@ let cardapio = JSON.parse(localStorage.getItem("cardapio")) || [
 
 let pedido = [];
 
+function formatarMoeda(valor) {
+  return Number(valor || 0).toFixed(2).replace(".", ",");
+}
+
 // =========================
 // CARDÁPIO / PEDIDOS
 // =========================
@@ -21,7 +25,7 @@ function carregar() {
   select.innerHTML = "";
 
   cardapio.forEach((p, i) => {
-    select.innerHTML += `<option value="${i}">${p.nome} - R$ ${p.preco.toFixed(2)}</option>`;
+    select.innerHTML += `<option value="${i}">${p.nome} - R$ ${formatarMoeda(p.preco)}</option>`;
   });
 }
 
@@ -32,8 +36,8 @@ function addItem() {
 
   if (!produtoSelect || !qtdInput || !opcaoInput) return;
 
-  const i = produtoSelect.value;
-  const qtd = parseInt(qtdInput.value);
+  const i = Number(produtoSelect.value);
+  const qtd = parseInt(qtdInput.value, 10);
   const opcao = opcaoInput.value.trim();
 
   if (isNaN(qtd) || qtd <= 0) {
@@ -42,6 +46,7 @@ function addItem() {
   }
 
   const produto = cardapio[i];
+  if (!produto) return;
 
   pedido.push({
     ...produto,
@@ -55,12 +60,13 @@ function addItem() {
   render();
 }
 
+function removerItemPedido(indice) {
+  pedido.splice(indice, 1);
+  render();
+}
+
 function calcularTotal() {
-  let total = 0;
-  pedido.forEach((p) => {
-    total += p.preco * p.qtd;
-  });
-  return total;
+  return pedido.reduce((total, item) => total + (item.preco * item.qtd), 0);
 }
 
 function render() {
@@ -71,20 +77,29 @@ function render() {
 
   lista.innerHTML = "";
 
-  pedido.forEach((p) => {
-    const subtotal = p.preco * p.qtd;
+  if (pedido.length === 0) {
+    lista.innerHTML = `<div class="item item-vazio">Nenhum item adicionado ainda.</div>`;
+  } else {
+    pedido.forEach((p, index) => {
+      const subtotal = p.preco * p.qtd;
 
-    lista.innerHTML += `
-      <div class="item">
-        ${p.qtd}x ${p.nome}<br>
-        ${p.opcao ? `<small>↳ ${p.opcao}</small><br>` : ""}
-        R$ ${subtotal.toFixed(2)}
-      </div>
-    `;
-  });
+      lista.innerHTML += `
+        <div class="item item-pedido-card">
+          <div class="item-pedido-conteudo">
+            <div class="item-pedido-topo">
+              <strong>${p.qtd}x ${p.nome}</strong>
+              <button type="button" class="icon-btn btn-danger" onclick="removerItemPedido(${index})" title="Excluir item">🗑️</button>
+            </div>
+            ${p.opcao ? `<small>↳ ${p.opcao}</small>` : ""}
+            <div class="item-pedido-preco">R$ ${formatarMoeda(subtotal)}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
 
   if (totalDiv) {
-    totalDiv.innerText = "Total: R$ " + calcularTotal().toFixed(2);
+    totalDiv.innerText = "Total: R$ " + formatarMoeda(calcularTotal());
   }
 }
 
@@ -100,7 +115,7 @@ function gerarNumeroPedido() {
     numero = 1;
     localStorage.setItem("dataPedido", hoje);
   } else {
-    numero = numero ? parseInt(numero) + 1 : 1;
+    numero = numero ? parseInt(numero, 10) + 1 : 1;
   }
 
   localStorage.setItem("numeroPedido", numero);
@@ -149,7 +164,7 @@ function montarCupomCliente(dadosPedido) {
         <div style="margin-bottom:8px;">
           <div style="display:flex; justify-content:space-between; gap:8px;">
             <span>${i.qtd}x ${i.nome}</span>
-            <span>R$ ${(i.qtd * i.preco).toFixed(2)}</span>
+            <span>R$ ${formatarMoeda(i.qtd * i.preco)}</span>
           </div>
           ${i.opcao ? `<div style="font-size:10px;">↳ ${i.opcao}</div>` : ""}
         </div>
@@ -175,7 +190,7 @@ function montarCupomCliente(dadosPedido) {
       <br>
       -------------------------
       <div style="font-size:14px; font-weight:bold;">
-        Total: R$ ${Number(dadosPedido.total).toFixed(2)}
+        Total: R$ ${formatarMoeda(dadosPedido.total)}
       </div>
       <br>
       <div style="font-size:12px;">
@@ -201,7 +216,7 @@ function montarCupomCozinha(dadosPedido) {
         <div style="margin-bottom:8px;">
           <div style="display:flex; justify-content:space-between; gap:8px;">
             <span>${i.qtd}x ${i.nome}</span>
-            <span>R$ ${(i.qtd * i.preco).toFixed(2)}</span>
+            <span>R$ ${formatarMoeda(i.qtd * i.preco)}</span>
           </div>
           ${i.opcao ? `<div style="font-size:10px;">↳ ${i.opcao}</div>` : ""}
         </div>
@@ -227,7 +242,7 @@ function montarCupomCozinha(dadosPedido) {
       <br>
       -------------------------
       <div style="font-size:14px; font-weight:bold;">
-        Total: R$ ${Number(dadosPedido.total).toFixed(2)}
+        Total: R$ ${formatarMoeda(dadosPedido.total)}
       </div>
       <br>
       <div style="font-size:12px;">
@@ -279,7 +294,7 @@ function imprimir() {
 // HISTÓRICO
 // =========================
 function salvarPedido(dadosPedido) {
-  let historico = JSON.parse(localStorage.getItem("historico")) || [];
+  const historico = JSON.parse(localStorage.getItem("historico")) || [];
   historico.push(dadosPedido);
   localStorage.setItem("historico", JSON.stringify(historico));
 }
@@ -297,6 +312,8 @@ function renderizarHistorico(listaHistorico) {
     return;
   }
 
+  div.classList.add("historico-grid");
+
   historicoOrdenado.forEach((p, index) => {
     div.innerHTML += `
       <div class="historico-card">
@@ -306,29 +323,23 @@ function renderizarHistorico(listaHistorico) {
             <span>${p.data}</span>
             <div class="historico-cliente">Cliente: ${p.cliente || "Não informado"}</div>
           </div>
-          <div class="historico-total">R$ ${Number(p.total).toFixed(2)}</div>
+          <div class="historico-total">R$ ${formatarMoeda(p.total)}</div>
         </div>
 
         <div class="historico-itens">
-          ${p.itens.map(i => `
+          ${(p.itens || []).map(i => `
             <div class="historico-item-linha">
               <span>${i.qtd}x ${i.nome}</span>
-              <span>R$ ${(i.qtd * i.preco).toFixed(2)}</span>
+              <span>R$ ${formatarMoeda(i.qtd * i.preco)}</span>
             </div>
             ${i.opcao ? `<div class="historico-obs">↳ ${i.opcao}</div>` : ""}
           `).join("")}
         </div>
 
         <div class="historico-acoes">
-          <button onclick="reimprimirPedido(${historicoOrdenado.length - 1 - index})">
-            🖨️ Reimprimir Cliente
-          </button>
-          <button onclick="reimprimirCozinha(${historicoOrdenado.length - 1 - index})">
-            🍔 Reimprimir Cozinha
-          </button>
-          <button class="btn-danger" onclick="excluirPedidoHistorico(${historicoOrdenado.length - 1 - index})">
-            🗑️ Excluir Pedido
-          </button>
+          <button onclick="reimprimirPedido(${historicoOrdenado.length - 1 - index})">🖨️ Reimprimir Cliente</button>
+          <button onclick="reimprimirCozinha(${historicoOrdenado.length - 1 - index})">🍔 Reimprimir Cozinha</button>
+          <button class="btn-danger" onclick="excluirPedidoHistorico(${historicoOrdenado.length - 1 - index})">🗑️ Excluir Pedido</button>
         </div>
       </div>
     `;
@@ -451,6 +462,17 @@ function verificarLogin() {
 // =========================
 // ADMIN
 // =========================
+function moverProduto(origem, destino) {
+  if (destino < 0 || destino >= cardapio.length) return;
+
+  const [item] = cardapio.splice(origem, 1);
+  cardapio.splice(destino, 0, item);
+
+  localStorage.setItem("cardapio", JSON.stringify(cardapio));
+  carregarAdmin();
+  carregar();
+}
+
 function carregarAdmin() {
   const div = document.getElementById("cardapioAdmin");
   if (!div) return;
@@ -460,6 +482,14 @@ function carregarAdmin() {
   cardapio.forEach((item, i) => {
     div.innerHTML += `
       <div class="admin-produto">
+        <div class="admin-produto-ordem">
+          <span class="ordem-badge">#${i + 1}</span>
+          <div class="admin-move-botoes">
+            <button type="button" class="move-btn" onclick="moverProduto(${i}, ${i - 1})" ${i === 0 ? "disabled" : ""}>↑</button>
+            <button type="button" class="move-btn" onclick="moverProduto(${i}, ${i + 1})" ${i === cardapio.length - 1 ? "disabled" : ""}>↓</button>
+          </div>
+        </div>
+
         <input value="${item.nome}" onchange="editarNome(${i}, this.value)">
         <input type="number" step="0.01" value="${item.preco}" onchange="editarPreco(${i}, this.value)">
         <button class="btn-danger" onclick="excluirProduto(${i})">Excluir</button>
@@ -489,6 +519,7 @@ function salvarCardapio() {
   localStorage.setItem("cardapio", JSON.stringify(cardapio));
   alert("Cardápio salvo com sucesso!");
   carregar();
+  carregarAdmin();
 }
 
 function adicionarProduto() {
@@ -558,6 +589,7 @@ function zerarHistorico() {
   if (!confirmar) return;
 
   localStorage.removeItem("historico");
+  carregarHistorico();
   alert("Histórico apagado com sucesso!");
 }
 
@@ -582,7 +614,7 @@ function calcularTotalVendidoHoje() {
   const hoje = new Date().toLocaleDateString();
 
   return historico
-    .filter(p => p.data.includes(hoje))
+    .filter(p => String(p.data || "").includes(hoje))
     .reduce((soma, p) => soma + Number(p.total || 0), 0);
 }
 
@@ -598,11 +630,18 @@ function mostrarDashboardAdmin() {
 
   dashboard.classList.remove("hidden");
   const totalHoje = calcularTotalVendidoHoje();
+  const quantidadeItens = cardapio.length;
 
   dashboard.innerHTML = `
-    <div class="dashboard-card">
-      <h3>Total vendido hoje</h3>
-      <p>R$ ${totalHoje.toFixed(2)}</p>
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3>Total vendido hoje</h3>
+        <p>R$ ${formatarMoeda(totalHoje)}</p>
+      </div>
+      <div class="dashboard-card">
+        <h3>Itens no cardápio</h3>
+        <p>${quantidadeItens}</p>
+      </div>
     </div>
   `;
 }
@@ -648,7 +687,10 @@ function importarBackup(event) {
       const dados = JSON.parse(e.target.result);
 
       if (dados.historico) localStorage.setItem("historico", JSON.stringify(dados.historico));
-      if (dados.cardapio) localStorage.setItem("cardapio", JSON.stringify(dados.cardapio));
+      if (dados.cardapio) {
+        cardapio = dados.cardapio;
+        localStorage.setItem("cardapio", JSON.stringify(dados.cardapio));
+      }
       if (dados.numeroPedido) localStorage.setItem("numeroPedido", dados.numeroPedido);
       if (dados.dataPedido) localStorage.setItem("dataPedido", dados.dataPedido);
 

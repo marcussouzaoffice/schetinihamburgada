@@ -13,6 +13,14 @@ body {
   color: #fff;
 }
 
+.admin-bg {
+  background: url('LOGOFES.png') no-repeat center center/cover;
+}
+
+.suporte-bg {
+  background: url('LOGOFES.png') no-repeat center center/cover;
+}
+
 .overlay {
   min-height: 100vh;
   display: flex;
@@ -63,6 +71,10 @@ nav span:hover {
   box-sizing: border-box;
 }
 
+.container-admin {
+  max-width: 1100px;
+}
+
 .panel,
 .admin-box {
   background: rgba(20, 20, 20, 0.78);
@@ -99,12 +111,37 @@ button:hover {
   background: #cc0000;
 }
 
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .print {
   background: green;
 }
 
 .print:hover {
   background: #0a8f0a;
+}
+
+.btn-danger {
+  background: #8b0000;
+}
+
+.btn-danger:hover {
+  background: #b00000;
+}
+
+.btn-warning {
+  background: #9a5b00;
+}
+
+.btn-warning:hover {
+  background: #bb7200;
+}
+
+.hidden {
+  display: none !important;
 }
 
 #lista {
@@ -116,6 +153,42 @@ button:hover {
   padding: 12px;
   border-radius: 10px;
   margin-bottom: 8px;
+}
+
+.item-vazio {
+  text-align: center;
+  color: #ccc;
+}
+
+.item-pedido-card {
+  padding: 0;
+}
+
+.item-pedido-conteudo {
+  padding: 14px;
+}
+
+.item-pedido-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.item-pedido-preco {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.icon-btn {
+  width: auto;
+  min-width: 46px;
+  margin-top: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .total {
@@ -131,10 +204,6 @@ footer {
   padding: 8px;
   font-size: 12px;
   margin-top: auto;
-}
-
-.hidden {
-  display: none !important;
 }
 
 .home {
@@ -214,44 +283,104 @@ footer {
   font-size: 13px;
 }
 
-.admin-box h2 {
-  margin-top: 0;
-  margin-bottom: 18px;
+.admin-header {
   text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-header img {
+  height: 72px;
+}
+
+.admin-system {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.admin-info {
+  color: #d4d4d4;
+  margin-bottom: 14px;
 }
 
 .admin-add {
-  margin: 18px 0;
+  margin: 22px 0;
 }
 
-.admin-add input {
-  margin-bottom: 8px;
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
 }
 
 .admin-produto {
   background: rgba(26, 26, 26, 0.95);
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .admin-produto input {
-  margin-bottom: 8px;
+  margin: 0;
 }
 
-.btn-danger {
-  background: #8b0000;
+.admin-produto-ordem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
-.btn-danger:hover {
-  background: #b00000;
+.ordem-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: bold;
+}
+
+.admin-move-botoes {
+  display: flex;
+  gap: 8px;
+}
+
+.move-btn {
+  width: 44px;
+  min-width: 44px;
+  padding: 10px 0;
+  margin-top: 0;
+  background: #2c2c2c;
+}
+
+.move-btn:hover {
+  background: #3b3b3b;
+}
+
+.admin-actions-grid,
+.dashboard-grid,
+.historico-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-actions-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.dashboard-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 20px;
 }
 
 .dashboard-card {
   background: rgba(255,255,255,0.06);
   border-radius: 14px;
   padding: 16px;
-  margin-bottom: 16px;
   text-align: center;
 }
 
@@ -266,11 +395,18 @@ footer {
   color: #00ff88;
 }
 
+#historico {
+  margin-top: 14px;
+}
+
+.historico-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
 .historico-card {
   background: rgba(20,20,20,0.82);
   border-radius: 16px;
   padding: 16px;
-  margin-bottom: 14px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
@@ -305,6 +441,30 @@ footer {
   margin-bottom: 8px;
 }
 
+.historico-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historico-cliente {
+  color: #ddd;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.historico-vazio {
+  text-align: center;
+  padding: 20px;
+  color: #ccc;
+  background: rgba(20,20,20,0.82);
+  border-radius: 16px;
+}
+
+#buscaHistorico {
+  margin-bottom: 14px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -316,7 +476,7 @@ footer {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   header {
     padding: 12px 14px;
   }
@@ -354,32 +514,20 @@ footer {
     max-width: 280px;
   }
 
-  .admin-box,
-  .panel {
+  .panel,
+  .admin-box {
     padding: 16px;
   }
-}
 
-.historico-acoes {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+  .historico-topo,
+  .item-pedido-topo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.historico-cliente {
-  color: #ddd;
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-.historico-vazio {
-  text-align: center;
-  padding: 20px;
-  color: #ccc;
-}
-
-#buscaHistorico {
-  margin-bottom: 14px;
+  .icon-btn {
+    align-self: flex-end;
+  }
 }
 
 @media (min-width: 700px) {
@@ -390,158 +538,4 @@ footer {
   .historico-acoes button {
     flex: 1;
   }
-}
-
-/* RESET */
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #fff;
-}
-
-/* FUNDO ADMIN */
-.admin-bg {
-  background: url('logofes.png') no-repeat center center/cover;
-}
-
-/* FUNDO SUPORTE */
-.suporte-bg {
-  background: url('logofes.png') no-repeat center center/cover;
-}
-
-/* OVERLAY ESCURO */
-.overlay {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.80);
-}
-
-/* HEADER */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #000;
-  padding: 15px 20px;
-}
-
-.logo img {
-  height: 60px;
-  cursor: pointer;
-}
-
-nav {
-  display: flex;
-  gap: 20px;
-}
-
-nav span {
-  cursor: pointer;
-}
-
-/* CONTAINER */
-.container {
-  padding: 20px;
-  max-width: 500px;
-  margin: auto;
-  width: 100%;
-}
-
-/* INPUTS */
-input, textarea, select {
-  width: 100%;
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: none;
-}
-
-/* BOTÕES */
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  background: red;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-danger {
-  background: #8b0000;
-}
-
-/* ADMIN */
-.admin-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.admin-header img {
-  height: 70px;
-}
-
-.admin-system {
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-/* WHATSAPP */
-.suporte {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 70vh;
-}
-
-.whatsapp-btn {
-  background: #1f1f1f;
-  border-radius: 20px;
-  padding: 25px;
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-}
-
-.whatsapp-btn img {
-  width: 70px;
-}
-
-.whatsapp-btn span {
-  color: red;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* FOOTER */
-footer {
-  background: #000;
-  padding: 10px;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.powered {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.powered img {
-  height: 18px;
-}
-
-/* UTIL */
-.hidden {
-  display: none !important;
 }
